@@ -6,4 +6,9 @@ public class TeleOp {
     public TeleOp(Robot robot){
         this.r = robot;
     }
+
+    public double getAngle(){
+        // TODO: Do voltage -> angle calc.
+        return 0.0;
+    }
 }
