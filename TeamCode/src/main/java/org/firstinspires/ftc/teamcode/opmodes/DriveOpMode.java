@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.supers.Mode;
 import org.firstinspires.ftc.teamcode.supers.Robot;
@@ -11,7 +13,8 @@ public class DriveOpMode extends LinearOpMode {
     private Robot robot;
 
     private double speedSetting = 1.0;
-    private boolean lastDDown = false, lastLBumper = false, lastRBumper = false;
+    private boolean lastDDown = false, lastLBumper = false, lastRBumper = false, lastX;
+    private double platformPos = 0.0;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -58,9 +61,22 @@ public class DriveOpMode extends LinearOpMode {
             // Platform rotation
             // For a standard 270 degree servo, 0.0037037037 in position is equivalent to ~1 degree of rotation
             // For a range 0-45: [0.0, 0.1666...]
+            // Each bumper press changes rotation by ~9 degrees
             if(gamepad1.left_bumper && !lastLBumper){
-                robot.platform.setPosition(robot.platform.getPosition() - (9 * 0.0037037037));
+                platformPos = Range.clip(robot.platform.getPosition() - (9 * 0.0037037037), 0.0, 0.16666666666666666);
+                robot.platform.setPosition(platformPos);
             }
+            else if(gamepad1.right_bumper && !lastRBumper){
+                platformPos = Range.clip(robot.platform.getPosition() + (9 * 0.0037037037), 0.0, 0.16666666666666666);
+                robot.platform.setPosition(platformPos);
+            }
+            lastLBumper = gamepad1.left_bumper;
+            lastRBumper = gamepad1.right_bumper;
+
+            if(gamepad1.x && !lastX){
+                robot.claw.setPosition(robot.claw.getPosition() == 0.0 ? 0.0 : 0.0); // TODO: Find good values for claw
+            }
+            lastX = gamepad1.x;
         }
     }
 }
