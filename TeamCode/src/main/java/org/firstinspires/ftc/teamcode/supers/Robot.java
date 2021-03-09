@@ -66,6 +66,7 @@ public class Robot {
 
         if(mode == Mode.AUTO){
             auto = new Auto(this);
+            initGyro();
         }
         else tele = new TeleOp(this);
     }
@@ -75,7 +76,7 @@ public class Robot {
         Globals.opMode.telemetry.update();
     }
 
-    public void initGyro(){
+    private void initGyro(){
         imu.initialize(params);
     }
 }
