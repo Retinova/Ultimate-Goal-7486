@@ -22,11 +22,11 @@ public class Robot {
     public Auto auto;
     public TeleOp tele;
 
-    private final OpMode opMode;
-    private final HardwareMap hwMap;
+    public final LinearOpMode opMode;
+    public final HardwareMap hwMap;
 
 
-    public Robot(OpMode opMode, Mode mode){
+    public Robot(LinearOpMode opMode, Mode mode){
         this.opMode = opMode;
         this.hwMap = opMode.hardwareMap;
 
@@ -77,6 +77,11 @@ public class Robot {
     }
 
     private void initGyro(){
-        imu.initialize(params);
+        while(imu.getSystemStatus() != BNO055IMU.SystemStatus.RUNNING_FUSION && !Globals.opMode.isStopRequested()) {
+            imu.initialize(params);
+            opMode.telemetry.addData("Status: ", imu.getSystemStatus());
+            opMode.telemetry.update();
+        }
+        opMode.telemetry.addData("status; ", imu.getSystemStatus());
     }
 }
