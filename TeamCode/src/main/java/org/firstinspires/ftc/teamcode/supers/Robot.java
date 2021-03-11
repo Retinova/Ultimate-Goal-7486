@@ -55,6 +55,8 @@ public class Robot {
         lb.setDirection(DcMotorSimple.Direction.REVERSE);
         // TODO: Reverse one of the output motors, test for which one
 
+        clawRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

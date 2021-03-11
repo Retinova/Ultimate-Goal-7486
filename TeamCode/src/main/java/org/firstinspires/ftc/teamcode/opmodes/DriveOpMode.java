@@ -13,8 +13,9 @@ public class DriveOpMode extends LinearOpMode {
     private Robot robot;
 
     private double speedSetting = 1.0;
-    private boolean lastDDown = false, lastLBumper = false, lastRBumper = false, lastX;
+    private boolean lastDDown = false, lastLBumper = false, lastRBumper = false, lastX = false, lastB = false, clawPos = false;
     private double platformPos = 0.0;
+
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -77,6 +78,27 @@ public class DriveOpMode extends LinearOpMode {
                 robot.claw.setPosition(robot.claw.getPosition() == 0.0 ? 0.0 : 0.0); // TODO: Find good values for claw
             }
             lastX = gamepad1.x;
+
+            // rotating grabber arm (motor)
+            if (gamepad1.b && lastB){
+
+                if (!clawPos){
+                    robot.clawRot.setTargetPosition(robot.clawRot.getCurrentPosition() + 144);
+                    robot.clawRot.setPower(1.0);
+                    clawPos = !clawPos;
+                }
+                else{
+                    robot.clawRot.setTargetPosition(robot.clawRot.getCurrentPosition() - 144);
+                    robot.clawRot.setPower(1.0);
+                    clawPos = !clawPos;
+                }
+            }
+            lastB = gamepad1.b;
+
+            if(!robot.clawRot.isBusy()){
+                robot.clawRot.setPower(0.0);
+
+            }
         }
     }
 }
