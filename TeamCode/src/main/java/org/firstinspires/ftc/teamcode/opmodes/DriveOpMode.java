@@ -81,23 +81,19 @@ public class DriveOpMode extends LinearOpMode {
 
             // rotating grabber arm (motor)
             if (gamepad1.b && lastB){
-
                 if (!clawPos){
                     robot.clawRot.setTargetPosition(robot.clawRot.getCurrentPosition() + 144);
-                    robot.clawRot.setPower(1.0);
-                    clawPos = !clawPos;
                 }
                 else{
                     robot.clawRot.setTargetPosition(robot.clawRot.getCurrentPosition() - 144);
-                    robot.clawRot.setPower(1.0);
-                    clawPos = !clawPos;
                 }
+                robot.clawRot.setPower(1.0);
+                clawPos = !clawPos;
             }
             lastB = gamepad1.b;
 
             if(!robot.clawRot.isBusy()){
                 robot.clawRot.setPower(0.0);
-
             }
         }
     }
