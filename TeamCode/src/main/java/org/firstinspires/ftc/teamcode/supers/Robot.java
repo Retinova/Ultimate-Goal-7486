@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.odometry.Odometry;
+
 public class Robot {
     public final DcMotor lf, lb, rf, rb, out1, out2, in, clawRot;
     public final Servo claw, platform;
@@ -21,6 +23,9 @@ public class Robot {
 
     public Auto auto;
     public TeleOp tele;
+    public Odometry odo;
+
+    private OpModeState state;
 
     public final LinearOpMode opMode;
     public final HardwareMap hwMap;
@@ -68,9 +73,12 @@ public class Robot {
 
         if(mode == Mode.AUTO){
             auto = new Auto(this);
+            odo = new Odometry(this);
             initGyro();
         }
         else tele = new TeleOp(this);
+
+        state = OpModeState.STANDARD;
     }
 
     public void initCheck(){
@@ -85,5 +93,13 @@ public class Robot {
             opMode.telemetry.update();
         }
         opMode.telemetry.addData("status; ", imu.getSystemStatus());
+    }
+
+    public OpModeState getState(){
+        return this.state;
+    }
+
+    public void switchState(OpModeState state){
+        this.state = state;
     }
 }

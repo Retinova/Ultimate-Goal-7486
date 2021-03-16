@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.supers.Direction;
 import org.firstinspires.ftc.teamcode.supers.Globals;
 import org.firstinspires.ftc.teamcode.supers.Robot;
+import org.firstinspires.ftc.teamcode.supers.Target;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +21,8 @@ public class Odometry {
     // backend mouse stuff + constants
     private final int dpi = 1000;
     private final int fieldLength = 144000;
+    private final double rZ = 0.0;
+    private final HashMap<Target, double[]> targetCoords;
     private int[] lastTotals = {0, 0}; // used to find deltas at every call of update()
 
     // turning vars
@@ -62,6 +65,13 @@ public class Odometry {
             r.opMode.telemetry.addData("Failed to setup mouse: ", e);
             r.opMode.telemetry.update();
         }
+
+        // construct field coords
+        targetCoords = new HashMap<>(); // TODO: get actual coords
+        targetCoords.put(Target.TOP, new double[]{0.0, 0.0, 0.0});
+        targetCoords.put(Target.MID, new double[]{0.0, 0.0, 0.0});
+        targetCoords.put(Target.LOW, new double[]{0.0, 0.0, 0.0});
+        targetCoords.put(Target.POWER, new double[]{0.0, 0.0, 0.0});
     }
 
     public void setVelocity(double forward, double clockwise){
@@ -91,7 +101,7 @@ public class Odometry {
             turnPid.start();
             angleError = getError(angle, normalize(getCurrentAngle()));
 
-            while (Globals.opMode.opModeIsActive()) {
+            while (r.opMode.opModeIsActive()) {
                 if(Math.abs(angleError) > turnThreshhold) counter++; // threshold check
                 else counter = 0; // reset threshold counter (i.e. overshoot)
 
@@ -106,13 +116,6 @@ public class Odometry {
 
                 angleError = getError(angle, normalize(getCurrentAngle())); // update error using normalized angle
             }
-
-            setVelocity(0, 0); // stop motion
-
-            r.opMode.telemetry.addData("Current error: ", angleError);
-            r.opMode.telemetry.addData("Current angle: ", getCurrentAngle());
-            r.opMode.telemetry.addData("Target: ", angle);
-            r.opMode.telemetry.update();
         }
 
         // use 180 - -180
@@ -123,7 +126,7 @@ public class Odometry {
             turnPid.start();
             angleError = getError(angle, getCurrentAngle());
 
-            while(Globals.opMode.opModeIsActive()) {
+            while(r.opMode.opModeIsActive()) {
                 if(Math.abs(angleError) > turnThreshhold) counter++;
                 else counter = 0;
 
@@ -136,14 +139,16 @@ public class Odometry {
                 r.opMode.telemetry.update();
                 angleError = getError(angle, getCurrentAngle());
             }
-
-            setVelocity(0, 0);
-
-            r.opMode.telemetry.addData("Current error: ", angleError);
-            r.opMode.telemetry.addData("Current angle: ", getCurrentAngle());
-            r.opMode.telemetry.addData("Target: ", angle);
-            r.opMode.telemetry.update();
         }
+
+        setVelocity(0, 0); // stop motion
+
+        turnPid.reset();
+
+        r.opMode.telemetry.addData("Current error: ", angleError);
+        r.opMode.telemetry.addData("Current angle: ", getCurrentAngle());
+        r.opMode.telemetry.addData("Target: ", angle);
+        r.opMode.telemetry.update();
     }
 
     public double getCurrentAngle(){
@@ -222,7 +227,7 @@ public class Odometry {
         coordError = Math.hypot(getError(targetX, currentX), getError(targetY, currentY));
         double angleToTarget = Math.atan2(getError(targetY, currentY), getError(targetX, currentX)) - Math.PI / 4 - Math.toRadians(getCurrentAngle());
 
-        while(Globals.opMode.opModeIsActive()){
+        while(r.opMode.opModeIsActive()){
 //            setVelocity(posPid.getOutput(coordError), 0);
             if(Math.abs(coordError) < coordThreshold) counter++;
             else counter = 0;
@@ -250,6 +255,8 @@ public class Odometry {
             angleToTarget = Math.atan2(getError(targetY, currentY), getError(targetX, currentX)) - Math.PI / 4 - curAng;
         }
         setVelocity(0, 0);
+
+        posPid.reset();
     }
 
     public void resetEncoders(){
@@ -333,7 +340,7 @@ public class Odometry {
             }
 
             // Keep looping until the motor is at the desired position that was inputted
-            while (Globals.opMode.opModeIsActive() &&
+            while (r.opMode.opModeIsActive() &&
                     (r.lf.isBusy() && r.lb.isBusy() && r.rf.isBusy() && r.rb.isBusy())) {
 
                 // Display current status of motor paths
@@ -363,5 +370,13 @@ public class Odometry {
             resetEncoders();
 
         }
+    }
+
+    public boolean alignAndCheckShot(Target target){
+        double[] targetCoords = this.targetCoords.get(target);
+        double angleToTarget = Math.toDegrees(Math.atan2(targetCoords[1] - currentY, targetCoords[0] - currentX)) - 90;
+
+
+        return true;
     }
 }

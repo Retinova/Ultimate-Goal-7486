@@ -30,6 +30,12 @@ public class PIDController {
         startTime = System.currentTimeMillis();
     }
 
+    public void reset(){
+        p = 0;
+        i = 0;
+        d = 0;
+    }
+
     public double getOutput(double input){
         p = input;
 
