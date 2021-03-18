@@ -9,14 +9,16 @@ public class Auto {
         this.r = robot;
     }
 
-    robot = new Robot(this, Mode.Auto);
+    r = new Robot(this, Mode.AUTO);
     waitForStart();
 
     while(isStarted() && !isStopRequested()){
-        robot.clawRot.setTargetPosition(robot.clawRot.getCurrentPosition() + 144);
+        r.clawRot.setTargetPosition(r.clawRot.getCurrentPosition() + 144);
 
-        robot.clawRot.setPower(1.0);
+        r.clawRot.setPower(1.0);
         clawPos = !clawPos;
+
+        break
 
     }
 }
