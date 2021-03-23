@@ -3,15 +3,16 @@ package org.firstinspires.ftc.teamcode.opmodes.demobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="demobot", group="demo")
 public class DemoOpMode extends LinearOpMode {
     DcMotor lf, lb, rf, rb, clawRot;
-    Servo claw;
+    Servo claw1, claw2;
 
     double speedSetting = 1.0;
-    boolean clawPos = false, lastB = false, lastX = false;
+    boolean clawPos = false, lastB = false, lastX = false, lastA = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -20,6 +21,9 @@ public class DemoOpMode extends LinearOpMode {
         rf = hardwareMap.dcMotor.get("rf");
         rb = hardwareMap.dcMotor.get("rb");
         clawRot = hardwareMap.dcMotor.get("clawRot");
+
+        lf.setDirection(DcMotorSimple.Direction.REVERSE);
+        lb.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("> ", "Initialized");
         telemetry.update();
@@ -41,7 +45,7 @@ public class DemoOpMode extends LinearOpMode {
             this.rf.setPower(rf);
             this.rb.setPower(rb);
 
-            if (gamepad1.b && lastB){
+            /*if (gamepad1.b && lastB){
                 if (!clawPos){
                     clawRot.setTargetPosition(clawRot.getCurrentPosition() + 144);
                 }
@@ -55,12 +59,23 @@ public class DemoOpMode extends LinearOpMode {
 
             if(!clawRot.isBusy()){
                 clawRot.setPower(0.0);
-            }
+            }*/
+
+            if(gamepad1.dpad_up) clawRot.setPower(0.6);
+            else if(gamepad1.dpad_down) clawRot.setPower(-0.6);
+            else clawRot.setPower(0.0);
 
             if(gamepad1.x && !lastX){
-                claw.setPosition(claw.getPosition() == 0.0 ? 0.0 : 0.0); // TODO: Find good values for claw
+                claw1.setPosition(claw1.getPosition() == 0.0 ? 0.0 : 0.5);
             }
             lastX = gamepad1.x;
+
+            if(gamepad1.a && !lastA){
+                claw2.setPosition(claw1.getPosition() == 0.0 ? 0.0 : 0.5);
+            }
+            lastA = gamepad1.a;
+
+
         }
     }
 }
