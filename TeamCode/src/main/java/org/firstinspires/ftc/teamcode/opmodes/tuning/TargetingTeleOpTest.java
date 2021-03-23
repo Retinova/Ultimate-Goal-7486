@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.tuning;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
@@ -9,7 +10,8 @@ import org.firstinspires.ftc.teamcode.supers.OpModeState;
 import org.firstinspires.ftc.teamcode.supers.Robot;
 import org.firstinspires.ftc.teamcode.supers.Target;
 
-@TeleOp(name="Drive OpMode", group="TeleOp")
+@Disabled
+@TeleOp(name="Targeting Test", group="TeleOp")
 public class TargetingTeleOpTest extends LinearOpMode {
     private Robot robot;
 

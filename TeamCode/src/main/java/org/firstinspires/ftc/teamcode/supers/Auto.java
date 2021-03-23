@@ -8,24 +8,24 @@ public class Auto {
     public Auto(Robot robot){
         this.r = robot;
     }
-    public void claw(){
 
+    public void claw(){
        if(clawPos)
         r.clawRot.setTargetPosition(r.clawRot.getCurrentPosition() + 144);
-        else
+       else
         r.clawRot.setTargetPosition(r.clawRot.getCurrentPosition() - 144);
 
-        r.clawRot .setPower(1.0);
-        while(r.opMode.opModeIsActive() && r.clawRot.isBusy()){
+        r.clawRot.setPower(1.0);
 
+        while(r.opMode.opModeIsActive() && r.clawRot.isBusy()){
             r.opMode.telemetry.addData("Current Position: ",r.clawRot.getCurrentPosition());
             r.opMode.telemetry.update();
-
         }
         r.clawRot.setPower(0.0);
 
         clawPos = !clawPos;
     }
+
     public void shoot(){
         r.out1.setPower(1.0);
         r.out2.setPower(1.0);
@@ -33,5 +33,4 @@ public class Auto {
         r.out1.setPower(0.0);
         r.out2.setPower(0.0);
     }
-
 }
