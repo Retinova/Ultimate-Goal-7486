@@ -94,7 +94,7 @@ public class Odometry {
 
         // use 0 - 360
         if(angle >= 180 || angle <= -180) {
-            angle = normalize(angle); // normalize the angle if its negative
+            angle = normalize(angle); // normalize the angle if it's negative
 
             int counter = 0; // counter to keep track of consecutive times robot was within threshold
 

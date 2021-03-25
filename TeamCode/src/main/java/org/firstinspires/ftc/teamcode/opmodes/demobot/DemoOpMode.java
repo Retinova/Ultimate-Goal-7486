@@ -22,6 +22,9 @@ public class DemoOpMode extends LinearOpMode {
         rb = hardwareMap.dcMotor.get("rb");
         clawRot = hardwareMap.dcMotor.get("clawRot");
 
+        claw1 = hardwareMap.servo.get("hook");
+        claw2 = hardwareMap.servo.get("claw");
+
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
         lb.setDirection(DcMotorSimple.Direction.REVERSE);
 
