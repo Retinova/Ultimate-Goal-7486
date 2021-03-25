@@ -74,7 +74,7 @@ public class DemoOpMode extends LinearOpMode {
             lastX = gamepad1.x;
 
             if(gamepad1.a && !lastA){
-                claw2.setPosition(claw1.getPosition() == 0.0 ? 0.0 : 0.5);
+                claw2.setPosition(claw2.getPosition() == 0.0 ? 0.0 : 0.5);
             }
             lastA = gamepad1.a;
 
