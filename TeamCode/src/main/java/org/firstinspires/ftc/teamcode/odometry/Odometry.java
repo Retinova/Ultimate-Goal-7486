@@ -102,7 +102,7 @@ public class Odometry {
             angleError = getError(angle, normalize(getCurrentAngle()));
 
             while (r.opMode.opModeIsActive()) {
-                if(Math.abs(angleError) > turnThreshhold) counter++; // threshold check
+                if(Math.abs(angleError) < turnThreshhold) counter++; // threshold check
                 else counter = 0; // reset threshold counter (i.e. overshoot)
 
                 if(counter >= 2) break;
@@ -127,7 +127,7 @@ public class Odometry {
             angleError = getError(angle, getCurrentAngle());
 
             while(r.opMode.opModeIsActive()) {
-                if(Math.abs(angleError) > turnThreshhold) counter++;
+                if(Math.abs(angleError) < turnThreshhold) counter++;
                 else counter = 0;
 
                 if(counter >= 2) break;
@@ -169,6 +169,7 @@ public class Odometry {
         double currentAng = Math.toRadians(getCurrentAngle()); // get angle in radians
         double shifted = currentAng + (Math.PI / 2.0); // get angle shifted 90 degrees for y inputs
 
+        // TODO: check if the whole lastTotals thing is actually necessary
         int[] totals = mouseThread.getCoords(); // 0 = mouse x, 1 = mouse y
 
         // shift the angle for the y-input, but dont for the x-input because perpendicular to y movement(already shifted)
@@ -188,6 +189,7 @@ public class Odometry {
         lastTotals = totals;
     }
 
+    // TODO: make it not deltas
     public void drive(double deltaX, double deltaY){
 
         // get the angle to turn for aligning with the hypotenuse from inverse tan, subtract 90 to shift into proper robot orientation
