@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.supers.Mode;
 import org.firstinspires.ftc.teamcode.supers.Robot;
 
  @Disabled
- @TeleOp(name="Drive OpMode", group="TeleOp")
+ @TeleOp(name="Better Controller Test", group="Testing")
  public class BetterControllerOpMode extends LinearOpMode {
      private Robot robot;
 
