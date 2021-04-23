@@ -1,14 +1,20 @@
 package org.firstinspires.ftc.teamcode.opmodes.demobot;
 
+import android.media.MediaPlayer;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.R;
+
 @TeleOp(name="demobot", group="demo")
 public class DemoOpMode extends LinearOpMode {
     DcMotor lf, lb, rf, rb, clawRot;
+    MediaPlayer mediaPlayer = MediaPlayer.create(AppUtil.getDefContext(), R.raw.s);
     Servo claw1, claw2;
 
     double speedSetting = 1.0;
@@ -27,6 +33,8 @@ public class DemoOpMode extends LinearOpMode {
 
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
         lb.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        mediaPlayer.setVolume(1000f, 1000f);
 
         telemetry.addData("> ", "Initialized");
         telemetry.update();
@@ -78,6 +86,10 @@ public class DemoOpMode extends LinearOpMode {
             }
             lastA = gamepad1.a;
 
+            if(gamepad1.b && !lastB){
+                if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                else mediaPlayer.stop();
+            }
 
         }
     }
