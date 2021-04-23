@@ -77,12 +77,14 @@ public class DemoOpMode extends LinearOpMode {
             else clawRot.setPower(0.0);
 
             if(gamepad1.left_bumper && !lastX){
-                claw1.setPosition(claw1.getPosition() == 0.0 ? 0.0 : 0.5);
+//                claw1.setPosition(claw1.getPosition() == 0.0 ? 0.0 : 0.5);
+                claw1.setPosition(0.0);
             }
             lastX = gamepad1.left_bumper;
 
             if(gamepad1.right_bumper && !lastA){
-                claw2.setPosition(claw2.getPosition() == 0.0 ? 0.0 : 0.5);
+//                claw2.setPosition(claw2.getPosition() == 0.0 ? 0.0 : 0.5);
+                claw1.setPosition(0.5);
             }
             lastA = gamepad1.right_bumper;
 
