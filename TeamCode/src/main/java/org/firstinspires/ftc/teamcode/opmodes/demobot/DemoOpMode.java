@@ -76,15 +76,15 @@ public class DemoOpMode extends LinearOpMode {
             else if(gamepad1.dpad_down) clawRot.setPower(-0.6);
             else clawRot.setPower(0.0);
 
-            if(gamepad1.x && !lastX){
+            if(gamepad1.left_bumper && !lastX){
                 claw1.setPosition(claw1.getPosition() == 0.0 ? 0.0 : 0.5);
             }
-            lastX = gamepad1.x;
+            lastX = gamepad1.left_bumper;
 
-            if(gamepad1.a && !lastA){
+            if(gamepad1.right_bumper && !lastA){
                 claw2.setPosition(claw2.getPosition() == 0.0 ? 0.0 : 0.5);
             }
-            lastA = gamepad1.a;
+            lastA = gamepad1.right_bumper;
 
             if(gamepad1.b && !lastB){
                 if (!mediaPlayer.isPlaying()) mediaPlayer.start();
