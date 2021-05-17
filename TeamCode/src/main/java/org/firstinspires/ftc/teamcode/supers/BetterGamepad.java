@@ -22,6 +22,7 @@ public class BetterGamepad extends Gamepad {
                     lright_stick_button = false;
 
     // Override Gamepad update method to also set the previous button state
+    // TODO: Update last vars and then do super.update(event);?
     @Override
     public void update(KeyEvent event) {
         setGamepadId(event.getDeviceId());
